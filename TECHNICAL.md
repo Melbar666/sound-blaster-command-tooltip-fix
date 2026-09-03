@@ -73,8 +73,25 @@ The verifier independently checks the patched target and original backup.
 
 The uninstaller restores only a backup with the exact known original SHA-256.
 
+Two backup filenames are recognized:
+
+```text
+Hardcodet.Wpf.TaskbarNotification.dll.sticky-tooltip-fix.original.bak
+Hardcodet.Wpf.TaskbarNotification.dll.original-1.0.5.0.bak
+```
+
+The second name is retained only for compatibility with pre-public builds of this fix. It is accepted only when its SHA-256 matches the exact known original DLL.
+
 ## Distribution model
 
 No Creative binary and no pre-patched Hardcodet binary is distributed in this repository.
 
 Only the patching logic, known hashes, and documentation are published.
+
+## Process handling and diagnostics
+
+When Sound Blaster Command is running, install and uninstall request a graceful close first and wait up to five seconds. A force-stop is used only if the process is still present after that grace period.
+
+The CMD launchers keep the elevated PowerShell window visible and propagate the child process exit code.
+
+Install, uninstall, and verification append local diagnostic logs under `%TEMP%\SoundBlasterCommand-TooltipFix`. No diagnostic data is transmitted by the scripts.

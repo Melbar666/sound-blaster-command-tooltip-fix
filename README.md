@@ -16,7 +16,7 @@ For normal users, use the packaged ZIP from the latest GitHub Release:
 
 **https://github.com/Melbar666/sound-blaster-command-tooltip-fix/releases/latest**
 
-1. Download `SoundBlasterCommand-TooltipFix-v1.0.0.zip` from the release assets and extract it.
+1. Download `SoundBlasterCommand-TooltipFix-v1.0.1.zip` from the release assets and extract it.
 2. Double-click **`Install.cmd`**.
 3. Approve the Windows UAC prompt.
 4. Done.
@@ -26,6 +26,14 @@ Sound Blaster Command may already be running. The installer closes it briefly if
 To confirm the installation, double-click **`Verify.cmd`**.
 
 To remove the fix, double-click **`Uninstall.cmd`** and approve the UAC prompt.
+
+### Windows security prompts
+
+Installation and removal intentionally launch a **visible** elevated PowerShell process because the target DLL is inside `Program Files (x86)`. The scripts are not code-signed, so Windows SmartScreen, Defender, or third-party security software may show a warning depending on local policy.
+
+The scripts are plain text and can be inspected before running. The release includes `SHA256SUMS.txt` for the downloadable ZIP, and the installer itself performs exact SHA-256 checks before modifying the DLL.
+
+Before installing or uninstalling, close any Sound Blaster Command settings dialog with unsaved changes. The scripts request a graceful application shutdown and wait up to five seconds before force-stopping the process if it is still running.
 
 ## Supported build
 
@@ -106,6 +114,18 @@ The installer:
 `Uninstall.cmd` restores the verified original backup.
 
 `Verify.cmd` is read-only and does not require administrator privileges.
+
+## Diagnostic logs
+
+Install, uninstall, and verification runs append local diagnostic information to:
+
+```text
+%TEMP%\SoundBlasterCommand-TooltipFix\install.log
+%TEMP%\SoundBlasterCommand-TooltipFix\uninstall.log
+%TEMP%\SoundBlasterCommand-TooltipFix\verify.log
+```
+
+The logs contain step results, hashes, and errors intended to make issue reports reproducible. They are **never uploaded automatically** and the installer performs no network access.
 
 ## Release and GitHub Package
 
